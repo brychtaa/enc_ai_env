@@ -1,7 +1,7 @@
 # enc_ai_env
 Agentní prostředí.
 
-![Example start](/docs/img/example_start.png)
+![Example start](/docs/img/example_action.png)
 ![Example matrix](/docs/img/example_matrix.png)
 
 ## Ovládání
