@@ -12,6 +12,14 @@ Agentní prostředí.
 
 ## Examples
 
+### Install
+```commandline
+python -m venv venv/
+source venv/bin/activate
+pip3 install pygame
+cd src/
+python3 main.py
+```
 ### Použití Env a RobotEnv
 
 ```python
