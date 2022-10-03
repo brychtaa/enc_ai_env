@@ -1,7 +1,8 @@
 # enc_ai_env
 Agentní prostředí.
 
-![This is an image](/docs/img/example_start.png)
+![Example start](/docs/img/example_start.png)
+![Example matrix](/docs/img/example_matrix.png)
 
 ## Ovládání
 * Šipka nahoru - pohyb robota vpřed.
