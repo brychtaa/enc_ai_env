@@ -15,7 +15,7 @@ from pygame.locals import (
     K_SPACE
 )
 
-from src.robot_env import *
+from env.robot_env import *
 
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600

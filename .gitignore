@@ -1,0 +1,5 @@
+.idea/
+src/__pycache__/
+src/example/__pycache__/
+src/env/__pycache__/
+venv/

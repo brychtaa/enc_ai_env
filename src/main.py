@@ -1,6 +1,5 @@
 # file: main.py
 # author: Adam Brychta
-
 from example.run_example import run_example
 
 
@@ -15,8 +14,8 @@ def parse_args():
 
 def main(args):
     if args.map is None:
-        file_path_map = "res/maps/10x10_01.map"
-        file_path_config = "res/robotEnv.json"
+        file_path_map = "../res/maps/10x10_01.map"
+        file_path_config = "../res/robotEnv.json"
     else:
         file_path_map = args.map
         file_path_config = args.config

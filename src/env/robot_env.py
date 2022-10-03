@@ -1,7 +1,6 @@
 # file: robot_env.py
 # author: Adam Brychta
-
-from src.env import Env, get_char_pos
+from env.env import Env, get_char_pos
 
 DIRT = "dirt"
 DOCK = "dock"
@@ -210,31 +209,31 @@ def find_pos_arr(env_object_arr, env_obj):
     return None
 
 
-robot_world = RobotEnv()
+robot_env = RobotEnv()
 
 
 def move_forward(state):
-    robot_world.state = state
-    robot_world.move()
-    return robot_world.state
+    robot_env.state = state
+    robot_env.move()
+    return robot_env.state
 
 
 def rotate_left(state):
-    robot_world.state = state
-    robot_world.rotate(False)
-    return robot_world.state
+    robot_env.state = state
+    robot_env.rotate(False)
+    return robot_env.state
 
 
 def rotate_right(state):
-    robot_world.state = state
-    robot_world.rotate(True)
-    return robot_world.state
+    robot_env.state = state
+    robot_env.rotate(True)
+    return robot_env.state
 
 
 def clean(state):
-    robot_world.state = state
-    robot_world.clean()
-    return robot_world.state
+    robot_env.state = state
+    robot_env.clean()
+    return robot_env.state
 
 
 def turn_off(_):
