@@ -22,12 +22,12 @@ def run_example(file_path_config, file_path_map):
         # Agentovi je predana kopie stavu prostredi, odkaz na historii
         # action = example_agent(state, history.copy(), memory)
         action = keyboard_agent(state, history.copy(), memory)
-        history.append([state, action])
-        if action is None:
-            break
         state = robot_env.step(action)
-        if state is None:
-            print(epoch)
+        history.append([state, action])
+        print("epoch: " + str(epoch) + ", action: " + action.__name__ + ", remaining dirt: " +
+              str(robot_env.get_dirt_num()), end="\n")
+        if robot_env.running is False:
+            # Ukoncuje to env.
             break
 
     quit()

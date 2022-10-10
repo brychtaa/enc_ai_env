@@ -5,6 +5,7 @@ from time import sleep
 
 import pygame
 from pygame.locals import (
+    K_x,
     RLEACCEL,
     K_UP,
     K_LEFT,
@@ -42,7 +43,7 @@ def get_keyboard_action():
         for event in pygame.event.get():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    return None
+                    return turn_off
                 if event.key == K_UP:
                     return move_forward
                 if event.key == K_LEFT:
@@ -51,8 +52,10 @@ def get_keyboard_action():
                     return rotate_right
                 if event.key == K_SPACE:
                     return clean
+                if event.key == K_x:
+                    return turn_off
             elif event.type == QUIT:
-                return None
+                return turn_off
         sleep(0.03)
 
 

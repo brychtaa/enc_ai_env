@@ -36,6 +36,9 @@ class RobotEnv(Env):
         self.env_object_robot_arr = []
         self.env_object_robot_on_dirt_arr = []
 
+        # Score robota. Kolik vycisti policek.
+        self.score = 0
+
     def init(self, file_path_config):
         super(RobotEnv, self).init(file_path_config)
         self.env_object_wall = self.get_env_object_type_name("wall")
@@ -201,6 +204,16 @@ class RobotEnv(Env):
             elif Direction.WEST in env_object_robot.name:
                 self.state[row_robot][col_robot] = self.env_object_robot_west.char
 
+    def get_dirt_num(self):
+        dirt_num = 0
+        # vrati pocet zaspinenych policek.
+        for row in range(len(self.state)):
+            for col in range(len(self.state[row])):
+                env_object = self.get_env_object_type_char(self.state[row][col])
+                if env_object.char == self.env_object_dirt.char or env_object in self.env_object_robot_on_dirt_arr:
+                    dirt_num += 1
+        return dirt_num
+
 
 def find_pos_arr(env_object_arr, env_obj):
     for index in range(len(env_object_arr)):
@@ -236,5 +249,10 @@ def clean(state):
     return robot_env.state
 
 
-def turn_off(_):
-    return None
+def turn_off(state):
+    # Vypne se pokud je zadokovan.
+    row, col = robot_env.get_pos_robot()
+    robot = robot_env.state[row][col]
+    if robot == robot_env.env_object_robot_docked.char:
+        robot_env.running = False
+    return state

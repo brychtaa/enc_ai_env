@@ -13,7 +13,7 @@ CONFIG_ENV_OBJECT_TRAVERSABLE = "traversable"
 CONFIG_ENV_OBJECT_IMG = "img"
 
 
-class EnvObjectType:
+class EnvObject:
     def __init__(self, name, char, traversable, img):
         self.name = name
         self.char = char
@@ -27,6 +27,7 @@ class Env:
         self.env_objects = None
         self.rows = 0
         self.cols = 0
+        self.running = True
 
     def init(self, file_path_config):
         self.env_objects = []
@@ -44,14 +45,18 @@ class Env:
             return None
         config = json.load(f)
         for json_env_object in config[CONFIG_ENV_OBJECT]:
-            env_object = EnvObjectType(json_env_object[CONFIG_ENV_OBJECT_NAME], json_env_object[CONFIG_ENV_OBJECT_CHAR],
-                                       json_env_object[CONFIG_ENV_OBJECT_TRAVERSABLE],
-                                       json_env_object[CONFIG_ENV_OBJECT_IMG])
+            env_object = EnvObject(json_env_object[CONFIG_ENV_OBJECT_NAME], json_env_object[CONFIG_ENV_OBJECT_CHAR],
+                                   json_env_object[CONFIG_ENV_OBJECT_TRAVERSABLE],
+                                   json_env_object[CONFIG_ENV_OBJECT_IMG])
             self.env_objects.append(env_object)
         f.close()
 
     def step(self, action):
-        self.state = action(self.state)
+        if action is None:
+            self.running = False
+            return self.state.copy()
+        if self.running:
+            self.state = action(self.state)
         return self.state.copy()
 
     def get_env_object_type_char(self, char):
