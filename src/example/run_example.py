@@ -23,6 +23,8 @@ def run_example(file_path_config, file_path_map):
         # action = example_agent(state, history.copy(), memory)
         action = keyboard_agent(state, history.copy(), memory)
         history.append([state, action])
+        if action is None:
+            break
         state = robot_env.step(action)
         if state is None:
             print(epoch)
