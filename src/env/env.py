@@ -39,7 +39,7 @@ class Env:
         return self.state.copy()
 
     def _config_load(self, file_path_config):
-        f = open(file_path_config, "r")
+        f = open(file_path_config, encoding="utf8", mode="r")
         if f is None:
             return None
         config = json.load(f)
@@ -68,7 +68,7 @@ class Env:
 
 
 def load_world(file_path):
-    f = open(file_path, "r")
+    f = open(file_path, encoding="utf8", mode="r")
     if f is None:
         return None
     state = [[]]
