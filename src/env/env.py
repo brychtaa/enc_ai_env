@@ -1,7 +1,6 @@
 # file: env.py
 # author: Adam Brychta
 import codecs
-import io
 import json
 import os
 import zipfile

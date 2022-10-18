@@ -14,6 +14,7 @@ def parse_args():
 
 def main(args):
     if args.map is None:
+        # Lze definovat primo soubor, slozku se souborem, zip archiv nebo soubor v zip archivu.
         # file_path_map = "../res/robot_cleaner.zip"
         # file_path_config = "../res/robot_cleaner.zip"
         file_path_map = "../res/robot_cleaner.zip/robot_cleaner/default.map"
