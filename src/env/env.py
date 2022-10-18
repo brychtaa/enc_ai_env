@@ -1,7 +1,10 @@
 # file: env.py
 # author: Adam Brychta
-
+import codecs
+import io
 import json
+import os
+import zipfile
 
 EOL_LIN = "\n"
 EOL_MAC = "\r"
@@ -11,6 +14,8 @@ CONFIG_ENV_OBJECT_NAME = "name"
 CONFIG_ENV_OBJECT_CHAR = "char"
 CONFIG_ENV_OBJECT_TRAVERSABLE = "traversable"
 CONFIG_ENV_OBJECT_IMG = "img"
+
+ENCODING = 'utf-8'
 
 
 class EnvObject:
@@ -29,27 +34,27 @@ class Env:
         self.cols = 0
         self.running = True
 
-    def init(self, file_path_config):
+    def init(self, path):
+        file_content = get_file_content_from_zip(path, "env.json")
         self.env_objects = []
-        self._config_load(file_path_config)
+        self._config_load(file_content)
 
-    def reset(self, file_path_world):
-        self.state = load_world(file_path_world)
+    def reset(self, path):
+        file_content = get_file_content_from_zip(path, "default.map")
+        self.state = load_world(file_content)
         self.rows = len(self.state)
         self.cols = len(self.state[0])
         return self.state.copy()
 
-    def _config_load(self, file_path_config):
-        f = open(file_path_config, encoding="utf8", mode="r")
-        if f is None:
+    def _config_load(self, file_content):
+        if file_content is None:
             return None
-        config = json.load(f)
+        config = json.loads(file_content)
         for json_env_object in config[CONFIG_ENV_OBJECT]:
             env_object = EnvObject(json_env_object[CONFIG_ENV_OBJECT_NAME], json_env_object[CONFIG_ENV_OBJECT_CHAR],
                                    json_env_object[CONFIG_ENV_OBJECT_TRAVERSABLE],
                                    json_env_object[CONFIG_ENV_OBJECT_IMG])
             self.env_objects.append(env_object)
-        f.close()
 
     def step(self, action):
         if action is None:
@@ -72,23 +77,18 @@ class Env:
         return None
 
 
-def load_world(file_path):
-    f = open(file_path, encoding="utf8", mode="r")
-    if f is None:
+def load_world(file_content):
+    if file_content is None:
         return None
     state = [[]]
-    world = f.read()
     # Vytvori pole reprezentujici stav prostredi ze stringu na vstupu.
-    for char in world:
+    for char in file_content:
         if char == EOL_LIN:
             # Prida dalsi radek matice.
             state.append([])
         elif char != EOL_LIN:
             # Prida znak.
             state[len(state) - 1].append(char)
-
-    f.close()
-
     return state
 
 
@@ -99,3 +99,32 @@ def get_char_pos(state, char):
             if state[row][col] == char:
                 return row, col
     return None, None
+
+
+def get_file_content_from_zip(path, file_name, archive_ext=".zip"):
+    if ".zip" in path:
+        f = None
+        if ".zip" in os.path.basename(path):
+            archive = zipfile.ZipFile(path, "r")
+            for archive_file_path in archive.namelist():
+                if archive_file_path.endswith(file_name):
+                    f = archive.open(archive_file_path)
+        else:
+            archive = zipfile.ZipFile(path[:path.index(archive_ext) + len(archive_ext)], "r")
+            f = archive.open(path[path.index(archive_ext) + len(archive_ext) + 1:], mode="r")
+        if f is None:
+            return None
+        content = ""
+        for line in codecs.iterdecode(f, ENCODING):
+            content += line
+        return content
+    else:
+        # Pokud je to soubor.
+        if os.path.isdir(path):
+            # Jedna se o slozku s konfiguracnimi souboru.
+            f = open(path + file_name, encoding=ENCODING, mode="r")
+        else:
+            f = open(path, encoding=ENCODING, mode="r")
+        content = f.read()
+        f.close()
+        return content

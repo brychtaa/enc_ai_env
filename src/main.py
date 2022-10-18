@@ -14,8 +14,10 @@ def parse_args():
 
 def main(args):
     if args.map is None:
-        file_path_map = "../res/maps/10x10_01.map"
-        file_path_config = "../res/robotEnv.json"
+        # file_path_map = "../res/robot_cleaner.zip"
+        # file_path_config = "../res/robot_cleaner.zip"
+        file_path_map = "../res/robot_cleaner.zip/robot_cleaner/default.map"
+        file_path_config = "../res/robot_cleaner.zip/robot_cleaner/env.json"
     else:
         file_path_map = args.map
         file_path_config = args.config
